@@ -1,0 +1,228 @@
+/* CSS Variables for a premium, modern executive color palette */
+        :root {
+            --primary-color: #0f172a;    /* Deep Slate */
+            --secondary-color: #2563eb;  /* Accent Corporate Blue */
+            --text-main: #334155;        /* Body Text */
+            --text-light: #64748b;       /* Captions & Dates */
+            --bg-body: #f8fafc;          /* Soft Gray Canvas */
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;     /* Clean Dividers */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .resume-container {
+            max-width: 1020px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Top Header Area */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+            margin-bottom: 35px;
+            gap: 30px;
+        }
+
+        .header-text h1 {
+            font-size: 2.75rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .header-text .subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-info {
+            list-style: none;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .contact-info li {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 4px solid var(--secondary-color);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
+        }
+
+        /* Responsive Asymmetric Two-Column Grid */
+        .resume-grid {
+            display: grid;
+            grid-template-columns: 1fr 2.2fr;
+            gap: 45px;
+        }
+
+        /* Left Side Layout */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        /* Right Side Layout */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        /* Global Section Headers */
+        section h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .objective-p {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            text-align: left; /* Changed from justify to remove layout spacing bugs */
+        }
+
+        /* Visual Skills Badges */
+        .skills-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .skills-list li {
+            background: var(--bg-body);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* Timeline Items */
+        .exp-item {
+            margin-bottom: 25px;
+        }
+
+        .exp-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .exp-title {
+            font-size: 1.15rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .exp-company {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .exp-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+            background: var(--bg-body);
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .exp-item ul {
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .exp-item li {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 850px) {
+            .resume-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+            header {
+                flex-direction: column-reverse;
+                text-align: center;
+                align-items: center;
+            }
+            .contact-info {
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 15px 10px;
+            }
+            .resume-container {
+                padding: 25px 20px;
+            }
+            .header-text h1 {
+                font-size: 2.2rem;
+            }
+            .exp-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
