@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume</title>
+    <!-- Reference File: IS 201 final project_4.html -->
+    <style>
+        /* CSS Variables for a premium, modern executive color palette */
+        :root {
+            --primary-color: #0f172a;    /* Deep Slate */
+            --secondary-color: #2563eb;  /* Accent Corporate Blue */
+            --text-main: #334155;        /* Body Text */
+            --text-light: #64748b;       /* Captions & Dates */
+            --bg-body: #f8fafc;          /* Soft Gray Canvas */
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;     /* Clean Dividers */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0; /* Cleared to allow navigation bar to sit flush at the top */
+        }
+
+        /* ==========================================================================
+           INTEGRATED TOP NAVIGATION HEADER STYLING 
+           ========================================================================== */
+        .nav-header {
+            background-color: var(--primary-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1020px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 20px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           RESUME CONTENT CONTAINER STYLING 
+           ========================================================================== */
+        .resume-container {
+            max-width: 1020px;
+            margin: 40px auto; /* Centers the card layout and gives top/bottom breathing room */
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Top Header Area inside Card */
+        .resume-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+            margin-bottom: 35px;
+            gap: 30px;
+        }
+
+        .header-text h1 {
+            font-size: 2.75rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .header-text .subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-info {
+            list-style: none;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .contact-info li {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 4px solid var(--secondary-color);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
+        }
+
+        /* Responsive Asymmetric Two-Column Grid */
+        .resume-grid {
+            display: grid;
+            grid-template-columns: 1fr 2.2fr;
+            gap: 45px;
+        }
+
+        /* Left Side Layout */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        /* Right Side Layout */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        /* Global Section Headers */
+        section h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .objective-p {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            text-align: left;
+        }
+
+        /* Visual Skills Badges */
+        .skills-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .skills-list li {
+            background: var(--bg-body);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* Timeline Items */
+        .exp-item {
+            margin-bottom: 25px;
+        }
+
+        .exp-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .exp-title {
+            font-size: 1.15rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .exp-company {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .exp-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+            background: var(--bg-body);
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .exp-item ul {
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .exp-item li {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 850px) {
+            .resume-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+            .resume-card-header {
+                flex-direction: column-reverse;
+                text-align: center;
+                align-items: center;
+            }
+            .contact-info {
+                align-items: center;
+            }
+            .resume-container {
+                padding: 30px 20px;
+                margin: 20px auto;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .header-text h1 {
+                font-size: 2.2rem;
+            }
+            .exp-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Top Navigation Header -->
+    <div class="nav-header">
+        <div class="nav-container">
+            <span class="nav-brand">Elliot Plummer</span>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="resume.html" class="active">Resume</a>
+                <a href="videogame.html">Video Game</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Resume Grid Content Canvas Layout Box -->
+    <div class="resume-container">
+        <header class="resume-card-header">
+            <div class="header-text">
+                <h1>Elliot Plummer</h1>
+                <div class="subtitle">Leader, Scholar & Musician</div>
+                <ul class="contact-info">
+                    <li><span style="color: var(--secondary-color);">📍</span> Salt Lake City, Utah</li>
+                    <li><span style="color: var(--secondary-color);">✉</span> elliotplummerisawesome@icloud.com</li>
+                    <li><span style="color: var(--secondary-color);">📞</span> 385-123-4567</li>
+                </ul>
+            </div>
+            <img src="images/7E3E972D-D133-4277-91F7-C49DF6B4767F_1_105_c.jpeg" alt="Elliot Plummer Profile Portrait" class="profile-img">
+        </header>
+
+        <div class="resume-grid">
+            <aside class="sidebar">
+                <section>
+                    <h2>Objective</h2>
+                    <p class="objective-p">
+    Current BYU student with leadership, service, and music performance experience. Skilled in organization, communication, and supporting experiential learning initiatives. Seeking to contribute to the Office of Belonging through teaching assistance, research support, and program development.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Skills</h2>
+                    <ul class="skills-list">
+                        <li>Organization & task management</li>
+                        <li>Communication & teamwork</li>
+                        <li>Service coordination & leadership</li>
+                        <li>Microsoft Office (Word, Excel, Outlook)</li>
+                        <li>Bilingual: English & Spanish</li>
+                        <li>Piano and percussion performance</li>
+                    </ul>
+                </section>
+            </aside>
+
+            <main class="main-content">
+                <section>
+                    <h2>Relevant Experience</h2>
+                    
+                    <div class="exp-item">
+                        <div class="exp-header">
+                            <div>
+                                <div class="exp-title">Missionary (Spanish Speaking)</div>
+                                <div class="exp-company">The Church of Jesus Christ of Latter-day Saints</div>
+                            </div>
+                            <div class="exp-date">2023 - 2025</div>
+                        </div>
+                        <ul>
+                            <li>Served in leadership roles, coordinating service and supporting diverse communities.</li>
+                            <li>Developed strong communication skills in English and Spanish.</li>
+                            <li>Organized service opportunities and assisted in teaching and training settings.</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-item">
+                        <div class="exp-header">
+                            <div>
+                                <div class="exp-title">Accompanist / Music Support</div>
+                                <div class="exp-company">Religious & Volunteer Events</div>
+                            </div>
+                            <div class="exp-date">2023 - 2025</div>
+                        </div>
+                        <ul>
+                            <li>Provided piano and organ accompaniment for musical numbers at community and church gatherings.</li>
+                            <li>Adapted to various performance settings and collaborated with vocalists and instrumentalists.</li>
+                            <li>Supported cultural and spiritual belonging through music.</li>
+                            <li>Have played the piano for 14 years.</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-item">
+                        <div class="exp-header">
+                            <div>
+                                <div class="exp-title">High School Choir Accompanist</div>
+                                <div class="exp-company">Collaborative Arts</div>
+                            </div>
+                            <div class="exp-date">2019 - 2023</div>
+                        </div>
+                        <ul>
+                            <li>Accompanied choir rehearsals and performances for four years.</li>
+                            <li>Collaborated with directors and students to prepare polished musical presentations.</li>
+                            <li>Demonstrated consistency, responsibility, and reliability in meeting rehearsal schedules.</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-item">
+                        <div class="exp-header">
+                            <div>
+                                <div class="exp-title">Percussion Ensemble Member</div>
+                                <div class="exp-company">Ensemble Performance Division</div>
+                            </div>
+                            <div class="exp-date">2019 - 2023</div>
+                        </div>
+                        <ul>
+                            <li>Performed as part of a school percussion ensemble, specializing in keyboard and auxiliary percussion.</li>
+                            <li>Contributed to group performances, demonstrating teamwork and adaptability.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Additional Work Experience</h2>
+
+                    <div class="exp-item">
+                        <div class="exp-header">
+                            <div>
+                                <div class="exp-title">Owner / Operator</div>
+                                <div class="exp-company">Yard Cleanup Business</div>
+                            </div>
+                            <div class="exp-date">2021 - 2023</div>
+                        </div>
+                        <ul>
+                            <li>Managed 15 clients with year-round services.</li>
+                            <li>Gained organizational, scheduling, and customer service experience.</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-item">
+                        <div class="exp-header">
+                            <div>
+                                <div class="exp-title">Custodial Aid</div>
+                                <div class="exp-company">Local Elementary School</div>
+                            </div>
+                            <div class="exp-date">2020 - 2022</div>
+                        </div>
+                        <ul>
+                            <li>Maintained clean and safe environments through daily custodial tasks.</li>
+                            <li>Developed reliability and attention to detail.</li>
+                        </ul>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>

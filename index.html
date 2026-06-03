@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Drumming</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;       
+            --secondary-color: #2563eb;    
+            --text-main: #334155;           
+            --text-light: #64748b;          
+            --bg-body: #f1f5f9;             
+            --bg-card: #ffffff;             
+            --border-color: #e2e8f0;        
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style Definition 1: Core Body Styles specifying Font Family & Background Color */
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Style Definition 2: Nav Header Wrapper Positioning Bar Element */
+        .nav-header {
+            background-color: var(--primary-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1020px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 20px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: #ffffff;
+        }
+
+        /* Style Definition 3: Positioning Main Content Layout Container Div Block */
+        .main-container {
+            max-width: 1020px;
+            margin: 40px auto;
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        /* Hero Section Formatting Headers */
+        .hero-section {
+            text-align: center;
+            padding-bottom: 35px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-section .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-top: 10px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* On-Page Anchor Navigation Button styling */
+        .anchor-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .anchor-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Style Definition 4: Main Content Column Grid Configuration */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        section h2 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        /* Image formatting style */
+        .feature-img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Nested Lists Specifiers Block */
+        .framework-list {
+            padding-left: 20px;
+        }
+
+        .framework-list > li {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .framework-list ul {
+            padding-left: 20px;
+            margin-top: 5px;
+            list-style-type: circle;
+            font-weight: normal;
+        }
+
+        .framework-list ul li {
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        /* Fluid Video Container Block for Media Positioning & Responsiveness */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 177.77%; /* Scales perfectly to vertical video layouts (9:16 aspect ratio) */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #000000;
+        }
+
+        /* Responsive Adaptive Viewports */
+        @media (max-width: 850px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .main-container {
+                padding: 30px 20px;
+                margin: 20px auto;
+            }
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header">
+        <div class="nav-container">
+            <span class="nav-brand">Elliot Plummer</span>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="resume.html">Resume</a>
+                <a href="videogame.html">Video Game</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <header class="hero-section">
+            <h1>Rhythm & Cadence: My Passion for Drumming</h1>
+            <p class="subtitle">An overview of my musical background, from the high school drumline to the pit orchestra.</p>
+            <a href="#performance-media" class="anchor-btn">Assembly Video ➔</a>
+        </header>
+
+        <div class="content-grid">
+            
+            <div class="left-panel">
+                <section>
+                    <h2>My Percussion Background</h2>
+                    <p>Drumming has been a fundamental part of my passion and creativity. It picked up during high school, where I immersed myself in every percussion ensemble available, learning better timing, ensemble dynamics, and live stage performance.</p>
+                    
+                    <img src="images/056FCA88-2C03-437A-8507-6174DCA2D90D_1_105_c.jpeg" alt="Elliot Plummer playing tenor drums in the high school drumline" class="feature-img">
+                </section>
+
+                <section style="margin-top: 35px;">
+                    <h2>Ensemble Timeline & Milestones</h2>
+                    <p>Over the years, I have contributed to a variety of diverse musical environments, each requiring distinct things:</p>
+                    
+                    <ol class="framework-list">
+                        <li>
+                            The High School Drumline & Football Games
+                            <ul>
+                                <li>Marched playing the tenors for the fall football games.</li>
+                                <li>Played cadences to start every assembly and at halftimes.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Band & Collaborative Groups
+                            <ul>
+                                <li>Joined a band with a few of my friends to goof off and play fun songs.</li>
+                                <li>Learned how to improvise across different genres and had fun doing it.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            The Pit Orchestra 
+                            <ul>
+                                <li>Played percussion and piano in the pit orchestra for all the musicals.</li>
+                                <li>Provided musical accompaniment for lots of different productions.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </section>
+            </div>
+
+            <div class="right-panel">
+                <section id="performance-media">
+                    <h2>Live Performance Footage</h2>
+                    <p>To see some drumline cadences in action, watch this clip from the start of one of the assemblies:</p>
+                    
+                    <div class="video-wrapper">
+                        <video controls poster="IMG_6093.jpg">
+                            <source src="images/IMG_5093.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

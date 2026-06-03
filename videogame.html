@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweeper Game</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL VARIABLES & BASE CANVAS (Harmonized with Hub & Resume Theme)
+           ========================================================================== */
+        :root {
+            --primary-color: #0f172a;    /* Deep Slate */
+            --secondary-color: #2563eb;  /* Accent Corporate Blue */
+            --text-main: #334155;        /* Balanced Gray Readability Text */
+            --text-light: #64748b;       /* Captions & Labels */
+            --bg-body: #f1f5f9;          /* Deep Rich Canvas Background */
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --mine-color: #ef4444;       /* Red for bombs */
+            --safe-color: #10b981;       /* Green for win state */
+            --flag-color: #f59e0b;       /* Amber for flags */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0; /* Cleared to allow navigation bar to sit completely flush at the top */
+        }
+
+        /* ==========================================================================
+           EXACT MATCH TOP NAVIGATION HEADER STYLING 
+           ========================================================================== */
+        .nav-header {
+            background-color: var(--primary-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1020px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 20px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           GAME PANEL CONTAINER STYLING (Echoes the Professional Card Look)
+           ========================================================================== */
+        .game-container {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            max-width: 600px;
+            margin: 40px auto; /* Perfectly centers card with breathing room below navbar */
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        /* Dashboard Metrics Display */
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            padding: 12px 20px;
+            background: var(--bg-body);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Sweeper Game Board Grid Layout - Fixed to take full space while remaining a perfect square */
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr); /* Divides into 10 equal horizontal fractions */
+            gap: 2px;
+            background-color: var(--border-color);
+            border: 4px solid var(--border-color);
+            border-radius: 8px;
+            margin: 0 auto;
+            width: 100%;                  /* Fills the full width of the container space */
+            aspect-ratio: 1 / 1;          /* Locks layout into a true 10x10 square structure */
+        }
+
+        .cell {
+            background-color: #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.1s ease;
+            aspect-ratio: 1 / 1;          /* Guarantees individual cells are perfectly proportioned */
+        }
+
+        .cell:hover {
+            background-color: #94a3b8;
+        }
+
+        .cell.revealed {
+            background-color: #f8fafc;
+            cursor: default;
+        }
+
+        .cell.flagged {
+            background-color: var(--bg-card); 
+        }
+
+        .cell.mine {
+            background-color: var(--mine-color);
+        }
+
+        /* Action Controls Button */
+        .controls {
+            margin-top: 25px;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Distinct Color Mapping for Proximity Numbers */
+        .num-1 { color: #2563eb; }
+        .num-2 { color: #16a34a; }
+        .num-3 { color: #dc2626; }
+        .num-4 { color: #9333ea; }
+        .num-5 { color: #7c2d12; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 650px) {
+            .game-container {
+                margin: 20px;
+                padding: 25px 15px;
+            }
+            .cell {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header">
+        <div class="nav-container">
+            <span class="nav-brand">Elliot Plummer</span>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="resume.html">Resume</a>
+                <a href="videogame.html" class="active">Video Game</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <h1>Sweeper</h1>
+        <p class="instructions">Left-click to sweep a tile. Right-click to place a flag on a suspected bomb. Clear the board to win.</p>
+        
+        <div class="dashboard">
+            <span id="flags-left">Flags: 10</span>
+            <span id="game-status">Safe</span>
+        </div>
+
+        <div id="board"></div>
+
+        <div class="controls">
+            <button onclick="initGame()">Restart Game</button>
+        </div>
+    </div>
+
+    <script>
+        const boardSize = 10;
+        const mineCount = 10;
+        let board = [];
+        let flags = 0;
+        let gameOver = false;
+        let cellsRevealed = 0;
+
+        const boardElement = document.getElementById('board');
+        const flagsElement = document.getElementById('flags-left');
+        const statusElement = document.getElementById('game-status');
+
+        function initGame() {
+            board = [];
+            flags = mineCount;
+            gameOver = false;
+            cellsRevealed = 0;
+            boardElement.innerHTML = '';
+            flagsElement.textContent = `Flags: ${flags}`;
+            statusElement.textContent = 'Safe';
+            statusElement.style.color = 'var(--primary-color)';
+
+            // Build structural engine grid array
+            for (let r = 0; r < boardSize; r++) {
+                let row = [];
+                for (let c = 0; c < boardSize; c++) {
+                    row.push({
+                        isMine: false,
+                        isRevealed: false,
+                        isFlagged: false,
+                        neighborMines: 0,
+                        row: r,
+                        col: c
+                    });
+                }
+                board.push(row);
+            }
+
+            // Distribute Hidden Bombs randomly across cells
+            let minesPlanted = 0;
+            while (minesPlanted < mineCount) {
+                let r = Math.floor(Math.random() * boardSize);
+                let c = Math.floor(Math.random() * boardSize);
+                if (!board[r][c].isMine) {
+                    board[r][c].isMine = true;
+                    minesPlanted++;
+                }
+            }
+
+            // Index surrounding neighbor proximity numbers
+            for (let r = 0; r < boardSize; r++) {
+                for (let c = 0; c < boardSize; c++) {
+                    if (!board[r][c].isMine) {
+                        board[r][c].neighborMines = countMines(r, c);
+                    }
+                }
+            }
+
+            // Construct DOM view elements
+            for (let r = 0; r < boardSize; r++) {
+                for (let c = 0; c < boardSize; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    
+                    // Left Click Interaction Hook
+                    cell.addEventListener('click', () => revealCell(r, c));
+                    // Right Click Context Flagging Hook
+                    cell.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        flagCell(r, c);
+                    });
+                    
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+
+        function countMines(row, col) {
+            let count = 0;
+            for (let r = row - 1; r <= row + 1; r++) {
+                for (let c = col - 1; c <= col + 1; c++) {
+                    if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
+                        if (board[r][c].isMine) count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        function revealCell(r, c) {
+            if (gameOver || board[r][c].isRevealed || board[r][c].isFlagged) return;
+
+            const cellData = board[r][c];
+            const cellElement = getCellElement(r, c);
+            
+            cellData.isRevealed = true;
+            cellElement.classList.add('revealed');
+
+            if (cellData.isMine) {
+                triggerGameOver(false);
+                cellElement.classList.add('mine');
+                cellElement.textContent = '💣';
+                return;
+            }
+
+            cellsRevealed++;
+            if (cellData.neighborMines > 0) {
+                cellElement.textContent = cellData.neighborMines;
+                cellElement.classList.add(`num-${cellData.neighborMines}`);
+            } else {
+                // Auto flood fill cascade algorithm for clearing open empty nodes
+                for (let i = r - 1; i <= r + 1; i++) {
+                    for (let j = c - 1; j <= c + 1; j++) {
+                        if (i >= 0 && i < boardSize && j >= 0 && j < boardSize) {
+                            revealCell(i, j);
+                        }
+                    }
+                }
+            }
+            checkWin();
+        }
+
+        function flagCell(r, c) {
+            if (gameOver || board[r][c].isRevealed) return;
+
+            const cellData = board[r][c];
+            const cellElement = getCellElement(r, c);
+
+            if (!cellData.isFlagged && flags > 0) {
+                cellData.isFlagged = true;
+                cellElement.classList.add('flagged');
+                cellElement.textContent = '🚩';
+                flags--;
+            } else if (cellData.isFlagged) {
+                cellData.isFlagged = false;
+                cellElement.classList.remove('flagged');
+                cellElement.textContent = '';
+                flags++;
+            }
+            flagsElement.textContent = `Flags: ${flags}`;
+        }
+
+        function getCellElement(r, c) {
+            return document.querySelector(`[data-row=\"${r}\"][data-col=\"${c}\"]`);
+        }
+
+        function triggerGameOver(win) {
+            gameOver = true;
+            if (win) {
+                statusElement.textContent = 'YOU WIN!';
+                statusElement.style.color = 'var(--safe-color)';
+            } else {
+                statusElement.textContent = 'GAME OVER!';
+                statusElement.style.color = 'var(--mine-color)';
+                // Reveal all remaining hidden mine elements across board
+                for (let r = 0; r < boardSize; r++) {
+                    for (let c = 0; c < boardSize; c++) {
+                        if (board[r][c].isMine) {
+                            const cellEl = getCellElement(r, c);
+                            cellEl.classList.add('mine');
+                            cellEl.textContent = '💣';
+                        }
+                    }
+                }
+            }
+        }
+
+        function checkWin() {
+            if (cellsRevealed === (boardSize * boardSize) - mineCount) {
+                triggerGameOver(true);
+            }
+        }
+
+        // Initialize execution on content render completion
+        window.onload = initGame;
+    </script>
+</body>
+</html>
